@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body {
+			rgba(59, 93, 124, 0.53)
+		}
+		ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+		.ct {
+			position: relative;
+			width: 800px;
+			height: 400px;
+			padding: 20px;
+			background: gold;
+			margin: 100px auto;
+			border-radius: 5px;
+		}
+		.ct:after {
+			content: '';
+			display: block;
+			position: absolute;
+			left: 50%;
+			transform: translateX(-50%);
+			bottom: 0;
+			width: 90%;
+			height: 50px;
+			box-shadow: 0 5px 20px 0 #333;
+			border-radius:50%;
+			z-index: -1;
+		}
+		.wrap li {
+			width: 800px;
+			height: 400px;
+		}
+		.wrap img {
+			width: 800px;
+			height: 400px;
+			vertical-align: top;
+		}
+		.btn {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 0;
+			height: 80px;
+			text-align: center;
+			line-height: 80px;
+			background: rgba(0,0,0,.1);
+			color: #fff;
+			font-weight: bolder;
+			cursor: pointer;
+			transition: width .1s linear;
+			-webkit-user-select: none; /* webkit (safari, chrome) browsers */
+			-moz-user-select: none; /* mozilla browsers */
+			-khtml-user-select: none; /* webkit (konqueror) browsers */
+			-ms-user-select: none; /* IE10+ */
+		}
+		.btnLeft {
+			left: 20px;
+			border-radius: 0 5px 5px 0/0 5px 5px 0;
+		}
+		.btnRight {
+			right: 20px;
+			border-radius: 5px 0 0 5px/5px 0 0 5px;
+		}
+		.icon {
+			position: absolute;
+			bottom: 10px;
+			right: 60px;
+		}
+		.icon p {
+			float:left;
+			width: 30px;
+			height: 30px;
+			text-align: center;
+			line-height: 30px;
+			border-radius: 50%;
+			margin-left: 5px;
+			background: rgba(220,220,220,.5);
+			cursor: default;
+		}
+	</style>
+</head>
+<body>
+	<div class="ct"> 
+		<ul class="wrap">
+			<li><img src="http://wx1.sinaimg.cn/mw690/b9d0abb5ly1fgita8jq7lj211c0h8jxq.jpg" alt=""></li>
+			<li><img src="http://wx4.sinaimg.cn/mw690/b9d0abb5ly1fgita94hdbj211c0h87bz.jpg" alt=""></li>
+			<li><img src="http://wx2.sinaimg.cn/mw690/b9d0abb5ly1fgita9h88oj211e0hd44r.jpg" alt=""></li>
+			<li><img src="http://wx3.sinaimg.cn/mw690/b9d0abb5ly1fgita9znnkj211c0h8doz.jpg" alt=""></li>
+			<li><img src="http://wx4.sinaimg.cn/mw690/b9d0abb5ly1fgitaai8raj211c0h8nd9.jpg" alt=""></li>
+		</ul>
+		<div class="btnLeft btn"></div>
+		<div class="btnRight btn"></div>
+		<div class="icon">
+			<p>1</p>
+			<p>2</p>
+			<p>3</p>
+			<p>4</p>
+			<p>5</p>
+		</div>
+						
+
+	</div>
+	<script>
+		var ct = document.getElementsByClassName('ct')[0];
+		var lis = document.getElementsByTagName('li');
+		var btnLeft = document.getElementsByClassName('btnLeft')[0];
+		var btnRight = document.getElementsByClassName('btnRight')[0];
+		var ps = document.getElementsByTagName('p');
+		var imgNum = 0;
+		var clock;
+		changeImg(lis,imgNum);
+		function changeImg(arr,index){
+			for (var i=0; i<arr.length; i++){
+				arr[i].style.display = 'none';
+				ps[i].style.background='rgba(220,220,220,.5)';
+			}
+			arr[index].style.display = 'block';
+			ps[index].style.background='gold';
+		}
+		//自动轮播
+		clock=setInterval(banTimer,5000)
+		function banTimer(){
+			imgNum+=1;
+			if (imgNum>lis.length-1){
+				imgNum=0;
+			}
+			changeImg(lis,imgNum);
+		}
+		ct.onmouseover = function (){
+			btnLeft.style.width ='40px';
+			btnRight.style.width ='40px';
+			btnLeft.innerHTML='&lt;';
+			btnRight.innerHTML='&gt;';
+		}
+		ct.onmouseout = function (){
+			btnLeft.style.width ='0';
+			btnRight.style.width ='0';
+			btnLeft.innerHTML='';
+			btnRight.innerHTML='';
+		}
+
+
+		//左右btn
+		btnLeft.onclick = function (){
+			clearInterval(clock);
+			imgNum-=1;
+			if (imgNum<0){
+				imgNum=lis.length-1;
+			}
+			changeImg(lis,imgNum);
+		}
+		btnLeft.onmouseout = function (){
+			clearInterval(clock);
+			clock=setInterval(banTimer,5000);
+		}
+		btnRight.onclick = function (){
+			clearInterval(clock);
+			imgNum+=1;
+			if (imgNum>lis.length-1){
+				imgNum=0;
+			}
+			changeImg(lis,imgNum)
+		}
+		btnRight.onmouseout = function (){
+			clearInterval(clock);
+			clock=setInterval(banTimer,5000);
+		}
+
+		//icon变色轮播
+		for (var i=0; i<ps.length; i++){
+			ps[i].index=i;
+			ps[i].onmouseover = function (){
+				clearInterval(clock);
+				for (var j=0; j<ps.length; j++){
+					ps[j].style.background='rgba(220,220,220,.5)';
+				}
+				this.style.background='gold';
+				changeImg(lis,this.index)
+				imgNum=this.index;
+			}
+			ps[i].onmouseout = function (){
+				clock=setInterval(banTimer,5000);
+			}
+		}
+	</script>
+</body>
+</html>
