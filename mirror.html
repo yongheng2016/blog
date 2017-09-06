@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		html,body {
+			margin: 0;
+			background: #aaa;
+		}
+		.ct {
+			position: relative;
+			width: 350px;
+			height: 350px;
+			margin-top: 50px;
+			margin-left: 400px;
+
+		}
+		.left {
+			position: relative;
+			width: 350px;
+			height: 350px;
+			/*border: 1px solid #000;*/
+			background: red;
+		}
+		.left img {
+			width: 350px;
+			height: 350px;
+		}
+		.left .shade {
+			position: absolute;
+			top: 0;
+			left: 0;
+			display: none;
+			width: 200px;
+			height: 200px;
+			border: 1px solid red;
+			cursor: move;
+		}
+		.right {
+			display: none;
+			position: absolute;
+			top: 0;
+			left: 100%;
+			width: 450px;
+			height: 450px;
+			margin-left: 5px;
+			overflow: hidden;
+		}
+		.right img {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+		}
+		.ct .banner {
+			position: relative;
+			width: 350px;
+			margin: 30px auto;
+		}
+		.ct .banner .icon {
+			position: absolute;
+			top: 15px;
+			font-size: 30px;
+			color: #fff;
+		}
+		.ct .banner .iconLeft {
+			cursor: default;
+			left: 0;
+		}
+		.ct .banner .iconRight {
+			cursor: default;
+			right: 0;
+		}
+		.ct .banner .box {
+			display: none;
+		}
+		.ct ul {
+			display: flex;
+			justify-content: space-between;
+			width: 280px;
+			list-style: none;
+			padding: 0;
+			margin: 0 auto;
+
+		}
+		.ct li {
+			width: 50px;
+			height: 70px;
+			opacity: .1;
+			color: #fff;
+			font-size: 20px;
+			text-align: center;
+			line-height: 70px;
+			cursor: default;
+		}
+	</style>
+</head>
+<body>
+<div class="ct">
+	<div class="left">
+		<img src="http://wx1.sinaimg.cn/mw690/b9d0abb5ly1fgjoo53b7jj209q09q3yn.jpg" alt="small">
+		<div class="shade"></div>
+	</div>
+	<div class="banner">
+	<div class="icon iconLeft">&lt;</div>
+	<div class="icon iconRight">&gt;</div>
+	<div class="box">
+		<ul class="ul1">
+			<li class="item1">1</li>
+			<li class="item1">1</li>
+			<li class="item1">1</li>
+			<li class="item1">1</li>
+			<li class="item1">1</li>
+		</ul>		
+	</div>
+<div class="box">
+		<ul class="ul2">
+			<li class="item2">2</li>
+			<li class="item2">2</li>
+			<li class="item2">2</li>
+			<li class="item2">2</li>
+			<li class="item2">2</li>
+		</ul>	
+</div>
+<div class="box">
+		<ul class="ul3">
+			<li class="item3">3</li>
+			<li class="item3">3</li>
+			<li class="item3">3</li>
+			<li class="item3">3</li>
+			<li class="item3">3</li>
+		</ul>
+	</div>	
+</div>
+
+	
+	<div class="right">
+		<img class="rPhoto" src="http://wx1.sinaimg.cn/mw690/b9d0abb5ly1fgjoo4rlq1j20m80m8q45.jpg" alt="">
+	</div>
+</div>
+<script>
+	var ct = document.getElementsByClassName('ct')[0];
+	var left = document.getElementsByClassName('left')[0];
+	var right = document.getElementsByClassName('right')[0];
+	var bgColor1 = ['red','gold','green','orange','blue'];
+	var bgColor2 = ['#000','red','green','yellow','blue'];
+	var bgColor3 = ['blue','green','yellow','orange','red'];
+	var boxs = document.getElementsByClassName('box');
+	var lis1 = document.getElementsByClassName('item1');
+	var lis2 = document.getElementsByClassName('item2');
+	var lis3 = document.getElementsByClassName('item3');
+	var iconLeft = document.getElementsByClassName('iconLeft')[0];
+	var iconRight = document.getElementsByClassName('iconRight')[0];
+	var rPhoto = document.getElementsByClassName('rPhoto')[0];
+	var boxNum=0;
+	boxs[0].style.display = 'block';
+	lis1[0].style.opacity = '1';
+	lis2[0].style.opacity = '1';
+	lis3[0].style.opacity = '1';
+	lunDong(lis1,bgColor1);
+	lunDong(lis2,bgColor2);
+	lunDong(lis3,bgColor3);
+	function lunDong(lisNum,bg){
+		for (var i=0; i<lisNum.length; i++){
+			lisNum[i].style.background = bg[i]
+			lisNum[i].index=i;
+			lisNum[i].onmouseover = function (){
+				for (var j=0; j<lisNum.length; j++){
+					lisNum[j].style.opacity ='.1';
+				}
+				this.style.opacity = '1';
+				left.style.background=bg[this.index];
+			}
+		}		
+	}
+	iconLeft.onclick = function (){
+		for (var i=0; i<boxs.length; i++){
+			boxs[i].style.display='none';
+		}
+		boxNum-=1;
+		if (boxNum<0){
+			boxNum=boxs.length-1;
+		}
+		boxs[boxNum].style.display='block';	
+	}
+	iconRight.onclick = function (){
+		for (var i=0; i<boxs.length; i++){
+			boxs[i].style.display='none';
+		}
+		boxNum+=1;
+		if (boxNum>boxs.length-1){
+			boxNum=0;
+		}
+		boxs[boxNum].style.display='block';			
+	}
+
+//遮罩设置
+	var left = document.getElementsByClassName('left')[0];
+	var shade = document.getElementsByClassName('shade')[0];
+	var right = document.getElementsByClassName('right')[0];
+	left.onmouseover = function (){
+		shade.style.display = 'block';
+		right.style.display = 'block';
+	}
+	left.onmouseout = function (){
+		shade.style.display = 'none';
+		right.style.display = 'none';
+	}
+//移动遮罩
+console.log(left.offsetLeft)
+	var x,y;
+	left.onmousemove = function (event){
+		var e = event || window.event;
+		x = e.clientX-shade.offsetWidth/2-ct.offsetLeft;
+		y = e.clientY-shade.offsetHeight/2-ct.offsetTop;
+		if (x>left.offsetWidth-shade.offsetWidth){
+			x=left.offsetWidth-shade.offsetWidth
+		}
+		if (x<0){
+			x=0;
+		}
+		if (y<0){
+			y=0;
+		}
+		if (y>left.offsetHeight-shade.offsetHeight){
+			y=left.offsetHeight-shade.offsetHeight
+		}
+		shade.style.left = x+'px';
+		shade.style.top = y+'px';
+		rPhoto.style.left = -x*(left.offsetWidth/shade.offsetWidth)+'px';
+		rPhoto.style.top = -y*(left.offsetHeight/shade.offsetHeight)+'px';
+	}
+
+
+</script>
+</body>
+</html>
